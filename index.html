@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XYO.Luau Key System</title>
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at center, #1c1c1c, #0e0e0e 80%);
+    color: white;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .container {
+    text-align: center;
+  }
+  .logo {
+    width: 110px;
+    height: 110px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    background: url('https://i.imgur.com/GsjEbRG.jpeg') center/cover;
+    display: inline-block;
+  }
+  h1 { font-size: 28px; font-weight: 700; margin: 10px 0; }
+  h2 { font-size: 18px; color: #ccc; margin: 5px 0; }
+  h3 { font-size: 15px; color: #999; margin-bottom: 25px; }
+  .action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 280px;
+    margin: 10px auto;
+    padding: 12px 20px;
+    background: #222;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .action-btn:hover { background: #333; transform: scale(1.03); }
+  .question {
+    background: #444;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    font-weight: bold;
+    transition: background 0.3s, color 0.3s;
+  }
+  .unlocked { background: #22c55e !important; color: white; }
+  .progress {
+    margin-top: 20px;
+    font-weight: 500;
+  }
+  .unlock-btn {
+    margin-top: 25px;
+    background: #fff;
+    color: #000;
+    padding: 10px 25px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transition: 0.3s;
+  }
+  .unlock-btn.unlocked {
+    cursor: pointer;
+    opacity: 1;
+  }
+  .powered {
+    margin-top: 20px;
+    font-size: 13px;
+  }
+  .powered b { font-weight: 700; }
+
+  /* STEP 2 */
+  .key-screen, .final-screen { display: none; }
+  .key-box {
+    background: rgba(255,255,255,0.05);
+    padding: 30px;
+    border-radius: 15px;
+    width: 300px;
+    margin: auto;
+    backdrop-filter: blur(5px);
+  }
+  .key-box h2 { margin-bottom: 10px; font-weight: 700; }
+  .key-box p { margin-bottom: 20px; color: #ccc; }
+  .continue-btn {
+    background: #fff;
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  /* STEP 3 */
+  .key-text {
+    font-size: 25px;
+    background: #222;
+    padding: 15px 25px;
+    border-radius: 30px;
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+  .copy-btn, .perm-btn, .premium-btn {
+    padding: 10px 20px;
+    margin: 8px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s;
+  }
+  .copy-btn:hover, .premium-btn:hover, .perm-btn:hover { transform: scale(1.05); }
+  .copy-btn { background: #fff; color: #000; }
+  .perm-btn { background: #444; color: #fff; }
+  .premium-btn {
+    background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+    background-size: 400%;
+    color: white;
+    animation: rainbow 5s linear infinite;
+  }
+  @keyframes rainbow {
+    0% { background-position: 0% }
+    100% { background-position: 400% }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="step1">
+  <div class="logo"></div>
+  <h1>XYO.Luau Script</h1>
+  <h2>Get Script Key</h2>
+  <h3>Complete the actions and unlock the link.</h3>
+
+  <div class="action-btn" data-id="1" data-url="https://youtube.com/@modexelz?si=WlUIOBiZBy5_OtTv">
+    Subscribe to Youtube <div class="question">?</div>
+  </div>
+  <div class="action-btn" data-id="2" data-url="https://www.instagram.com/xyo.sketch?igsh=MTluYnVxYzg4bHpuZA==">
+    Follow in Instagram <div class="question">?</div>
+  </div>
+  <div class="action-btn" data-id="3" data-url="https://t.me/il2cppdumperr">
+    Join Channel Telegram <div class="question">?</div>
+  </div>
+
+  <div class="progress" id="progress">UNLOCK PROGRESS: 0/3</div>
+
+  <div class="unlock-btn" id="unlockBtn">
+     UNLOCK CONTENT
+  </div>
+
+  <div class="powered"><b>Powered By</b> XYO.Luau</div>
+</div>
+
+<div class="container key-screen" id="step2">
+  <div class="key-box">
+    <h2>Create your Key</h2>
+    <p>Please wait and click continue to get whitelisted.</p>
+    <div class="continue-btn" id="continueBtn">Continue</div>
+  </div>
+</div>
+
+<div class="container final-screen" id="step3">
+  <div class="key-text" id="keyText"></div><br>
+  <button class="copy-btn" id="copyBtn">Copy</button>
+  <button class="premium-btn" onclick="window.location.href='https://t.me/+dS9uy58tpaJlY2E5'">Get Premium Script</button>
+  <button class="perm-btn">Get Permanently Key</button>
+</div>
+
+<script>
+  // === STEP 1: Unlock System ===
+  let unlocked = [false, false, false];
+  const progressEl = document.getElementById("progress");
+  const unlockBtn = document.getElementById("unlockBtn");
+
+  document.querySelectorAll(".action-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const q = btn.querySelector(".question");
+      const url = btn.dataset.url;
+      window.open(url, "_blank"); // Abre el link
+
+      if (q.classList.contains("unlocked")) return;
+
+      let count = 5;
+      q.textContent = count;
+      const interval = setInterval(() => {
+        count--;
+        q.textContent = count;
+        if (count <= 0) {
+          clearInterval(interval);
+          q.classList.add("unlocked");
+          q.textContent = "";
+          unlocked[btn.dataset.id - 1] = true;
+          updateProgress();
+        }
+      }, 1000);
+    });
+  });
+
+  function updateProgress() {
+    const done = unlocked.filter(v => v).length;
+    progressEl.textContent = `UNLOCK PROGRESS: ${done}/3`;
+    if (done === 3) {
+      unlockBtn.classList.add("unlocked");
+      unlockBtn.innerHTML = " UNLOCK CONTENT";
+      unlockBtn.onclick = () => {
+        document.getElementById("step1").style.display = "none";
+        document.getElementById("step2").style.display = "block";
+      };
+    }
+  }
+
+  // === STEP 2: Continue Timer ===
+  const continueBtn = document.getElementById("continueBtn");
+  continueBtn.addEventListener("click", () => {
+    let count = 5;
+    continueBtn.textContent = count;
+    const timer = setInterval(() => {
+      count--;
+      continueBtn.textContent = count;
+      if (count <= 0) {
+        clearInterval(timer);
+        document.getElementById("step2").style.display = "none";
+        document.getElementById("step3").style.display = "block";
+        generateKey();
+      }
+    }, 1200); // conteo más lento
+  });
+
+  // === STEP 3: Key Generation ===
+  function generateKey() {
+    const date = new Date();
+    const dayKey = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    let stored = localStorage.getItem("xyo_key_date");
+    let key = localStorage.getItem("xyo_key_value");
+    if (stored !== dayKey || !key) {
+      key = "XYO" + Math.random().toString(36).substring(2, 12).toUpperCase();
+      localStorage.setItem("xyo_key_date", dayKey);
+      localStorage.setItem("xyo_key_value", key);
+    }
+    document.getElementById("keyText").textContent = key;
+  }
+
+  document.getElementById("copyBtn").addEventListener("click", () => {
+    navigator.clipboard.writeText(document.getElementById("keyText").textContent);
+    alert(" Copied!");
+  });
+</script>
+</body>
+</html>
