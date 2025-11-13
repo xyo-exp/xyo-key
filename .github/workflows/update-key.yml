@@ -1,0 +1,26 @@
+name: Auto Update Key
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Ejecuta todos los días a medianoche (UTC)
+  workflow_dispatch:  # Permite ejecutarlo manualmente también
+
+jobs:
+  update-key:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Generate new key
+        run: |
+          KEY="XYO$(tr -dc A-Z0-9 </dev/urandom | head -c 7)"
+          echo "$KEY" > current-key.txt
+          echo "Generated new key: $KEY"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add current-key.txt
+          git commit -m "Update key"
+          git push
